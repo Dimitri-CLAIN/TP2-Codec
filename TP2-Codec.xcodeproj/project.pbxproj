@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		51C82AC427C4105900AF67FE /* save.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 51C82AC227C4105900AF67FE /* save.cpp */; };
 		F91F4E2D27C2B09D00120C7E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91F4E2C27C2B09D00120C7E /* main.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		51C82AC227C4105900AF67FE /* save.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = save.cpp; sourceTree = "<group>"; };
 		F91F4E2927C2B09D00120C7E /* TP2-Codec */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "TP2-Codec"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F91F4E2C27C2B09D00120C7E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +59,7 @@
 		F91F4E2B27C2B09D00120C7E /* TP2-Codec */ = {
 			isa = PBXGroup;
 			children = (
+				51C82AC227C4105900AF67FE /* save.cpp */,
 				F91F4E2C27C2B09D00120C7E /* main.cpp */,
 			);
 			path = "TP2-Codec";
@@ -119,6 +122,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51C82AC427C4105900AF67FE /* save.cpp in Sources */,
 				F91F4E2D27C2B09D00120C7E /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,10 +244,11 @@
 		F91F4E3127C2B09D00120C7E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ATXXSN4776;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
 			name = Debug;
 		};
@@ -251,7 +256,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ATXXSN4776;
+				DEVELOPMENT_TEAM = 993P2RZJLJ;
 				ENABLE_HARDENED_RUNTIME = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
