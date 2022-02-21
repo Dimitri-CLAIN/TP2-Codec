@@ -1,0 +1,16 @@
+Le format d'encodage qui s'est imposé pour Unicode n'est pas un encodage à
+la brute sur $32$ bits, même s'il est possible, mais un code de longueur
+variable, l'UTF-8. L'UTF-8 (pour \textit{Universal (Character Set)
+Transformation Format}) propose un code \guill{à rallonges} pour encoder
+les caractères. Les $128$ premiers symboles encodent toujours le jeu ASCII
+et sont encodés sur un seul octet \fincise{et, en particulier, le
+\textsc{nul} reçoit toujours le code $0$ sur un octet}. Les codes de $128$
+à $2047$ sont encodés sur deux octets, de $2048$ à $65535$ sur $3$ octets,
+et les autres sur $4$ octets~\cite[Table~3-6, p.~125]{unicode-8}. La table
+est reproduite ici à la table~\ref{table-utf-8}. Chaque caractère n'a
+qu'une seule représentation, mais que le code n'est pas optimal. En effet,
+on pourrait représenter plus de valeurs en remarquant que la deuxième
+plage, par exemple, pourrait représenter les valeurs de 128 à 2175 (avec le
+code 110:00000 10:000000 encodant 128), alors que le standard prévoit que
+le premier code valide de cette plage est 110:00010 10:000000, encodant
+128.
