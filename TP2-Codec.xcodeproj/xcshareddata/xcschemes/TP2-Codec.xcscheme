@@ -54,7 +54,7 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "+"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-h"
@@ -62,7 +62,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-f"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-s"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "&lt;"
@@ -73,8 +81,12 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "texte1.unicode32"
+            argument = "&quot;Le format d&apos;encodage qui s&apos;est impos&#xe9; pour Unicode n&apos;est pas un encodage &#xe0;&quot;"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "texte1.unicode32"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "texte.txt"
