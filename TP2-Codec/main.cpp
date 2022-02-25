@@ -18,7 +18,7 @@ wchar_t getBytes(wchar_t value, int pos, int nbBytes)
 wchar_t *utf8BytesToUnicodeBytes(wchar_t bytes, int nbBytes)
 {
     int n = nbBytes;
-    std::vector<wchar_t> res(1, 0);
+    std::vector<wchar_t> res(4, 0);
 
     while (bytes & (1 << n)) {
         n--;
@@ -27,21 +27,15 @@ wchar_t *utf8BytesToUnicodeBytes(wchar_t bytes, int nbBytes)
     switch (n) {
         case 1:
             res[0] = (getBytes(bytes, 9, 5) << 6) | (getBytes(bytes, 1, 6));
-            res.push_back(0b00000000);
-            res.push_back(0b00000000);
-            res.push_back(0b00000000);
             break;
         case 2:
             res[0] = (getBytes(bytes, 17, 4) << 4) | (getBytes(bytes, 11, 4));
-            res.push_back((getBytes(bytes, 9, 2) << 6) | (getBytes(bytes, 1, 6)));
-            res.push_back(0b00000000);
-            res.push_back(0b00000000);
+            res[1] = (getBytes(bytes, 9, 2) << 6) | (getBytes(bytes, 1, 6));
             break;
         case 3:
             res[0] = (getBytes(bytes, 25, 3) << 2) | (getBytes(bytes, 21, 2));
-            res.push_back((getBytes(bytes, 17, 4) << 4) | (getBytes(bytes, 11, 4)));
-            res.push_back((getBytes(bytes, 9, 2) << 6) | (getBytes(bytes, 1, 6)));
-            res.push_back(0b00000000);
+            res[1] = (getBytes(bytes, 17, 4) << 4) | (getBytes(bytes, 11, 4));
+            res[2] = (getBytes(bytes, 9, 2) << 6) | (getBytes(bytes, 1, 6));
             break;
     }
     res.push_back('\0');
@@ -50,28 +44,19 @@ wchar_t *utf8BytesToUnicodeBytes(wchar_t bytes, int nbBytes)
 
 int UtfToUni(std::string text)
 {
-//    wchar_t bytes = 0b1100001010100011;
-//    wchar_t bytes = 0b111011110011111100111111;
-//    wchar_t bytes = 0b111000001010010010111001;
-//    wchar_t bytes = 0b111000101000001010101100;
-//    wchar_t bytes = 0b111011011001010110011100;
-//    wchar_t bytes = 0b11110000100100001000110110001000;
     wchar_t *data = NULL;
-
-    std::wofstream myfile(L"example.encoded", std::ios_base::binary | std::ios_base::out);
-//    data = utf8BytesToUnicodeBytes(bytes, 15);
-//    data = utf8BytesToUnicodeBytes(bytes, 23);
-//    data = utf8BytesToUnicodeBytes(bytes, 31);
-//    myfile << data;
+    std::wofstream myfile(L"example.uni", std::ios_base::binary | std::ios_base::out);
 
     for (wchar_t nextChar : text) {
         unsigned int len = (unsigned int)nextChar;
         if (len == 0)
             continue;
         if (len < 163) {
-            std::vector<wchar_t> res(1, getBytes(nextChar, 1, 7));
+            std::vector<wchar_t> res(4, 0);
+            res[0] = getBytes(nextChar, 1, 7);
+            res.push_back('\0');
             data = &res[0];
-        }
+        }// Le vector est set avec {0, 0, 0, 0}, dans la mémoire le résultat de 'L' est bien "4C 00 00 00" mais dans le fichier j'ai pas les 00 correspondant ...
         else if (len < 2361)
             data = utf8BytesToUnicodeBytes(nextChar, 15);
         else if (len < 66376)
