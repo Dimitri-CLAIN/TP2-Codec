@@ -2,13 +2,15 @@
 //  main.cpp
 //  TP2-Codec
 //
-//  Created by Clain Dimitri on 2022-02-20.
+//  Created by Clain Dimitri & Vandenbossche Louis on 2022-02-15.
 //
 
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <vector>
+
+long long fileLen = 0;
 
 wchar_t getBytes(wchar_t value, int pos, int nbBytes)
 {
@@ -18,7 +20,7 @@ wchar_t getBytes(wchar_t value, int pos, int nbBytes)
 wchar_t *utf8BytesToUnicodeBytes(wchar_t bytes, int nbBytes)
 {
     int n = nbBytes;
-    std::vector<wchar_t> res(4, 0);
+    static std::vector<wchar_t> res(4, 0);
 
     while (bytes & (1 << n)) {
         n--;
@@ -45,7 +47,7 @@ wchar_t *utf8BytesToUnicodeBytes(wchar_t bytes, int nbBytes)
 int UtfToUni(std::string text)
 {
     wchar_t *data = NULL;
-    std::wofstream myfile(L"example.uni", std::ios_base::binary | std::ios_base::out);
+    std::wofstream myfile("example.uni", std::ios_base::binary | std::ios_base::out);
 
     for (wchar_t nextChar : text) {
         unsigned int len = (unsigned int)nextChar;
@@ -100,23 +102,26 @@ wchar_t *unicodeBytesToUft8bytes(wchar_t value, int nbBytes) {
     return &resV[0];
 }
 
-int UniToUtf(std::string text) {
+int UniToUtf(char *text) {
     wchar_t *charUTF8 = NULL;
-    std::wofstream myfile(L"example.encoded", std::ios_base::binary | std::ios_base::out);
+    std::ofstream myfile("example.encoded", std::ios_base::binary | std::ios_base::out);
 
+    for (int i = 0; i < fileLen; i += 4) {
+        unsigned int size = (unsigned int)text[i];
 
-    for (wchar_t nextChar : text) {
-        if ((unsigned int)nextChar == 0)
+        if (size == 0)
             continue;
-        if ((unsigned int)nextChar < 163)
-            charUTF8 = unicodeBytesToUft8bytes(nextChar, 1);
-        else if ((unsigned int)nextChar < 2361)
-            charUTF8 =unicodeBytesToUft8bytes(nextChar, 6);
-        else if ((unsigned int)nextChar < 66376)
-            charUTF8 =unicodeBytesToUft8bytes(nextChar, 12);
-        else if ((unsigned int)nextChar >= 66376)
-            charUTF8 =unicodeBytesToUft8bytes(nextChar, 18);
-        myfile << charUTF8;
+        if (size < 163)
+            charUTF8 = unicodeBytesToUft8bytes(text[i], 1);
+        else if (size < 2361)
+            charUTF8 =unicodeBytesToUft8bytes(text[i], 6);
+        else if (size <= 54620)
+            charUTF8 =unicodeBytesToUft8bytes(text[i], 12);
+        else if (size <= 66376)
+            charUTF8 =unicodeBytesToUft8bytes(text[i], 18);
+        for(int j = 0; charUTF8[j]; j++) {
+            myfile.put(charUTF8[j]);
+        }
     }
     myfile.close();
     return 0;
@@ -124,7 +129,6 @@ int UniToUtf(std::string text) {
 
 char *reader(char *argv) {
     char *text = NULL;
-    int fileLen = 0;
 
     std::fstream file;
     file.open(argv, std::ios::binary | std::ios::in);
@@ -167,7 +171,6 @@ int main(int argc, char **argv) {
         flag1 = argv[1];
         flag2 = argv[2];
         if (flag2 == "-f") {
-//            text = NULL;
             text = reader(argv[3]);
         } else if (flag2 == "-s") {
             text = argv[3];
@@ -177,7 +180,6 @@ int main(int argc, char **argv) {
         if (text == NULL) {
             res = 84;
         } else {
-//            std::cout.write(text, std::strlen(text)) << std::endl;
             if (flag1 == "+") {
                 res = UtfToUni(text);
             } else if (flag1 == "-") {
